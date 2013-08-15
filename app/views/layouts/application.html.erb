@@ -8,6 +8,12 @@
 </head>
 <body>
 
+<% unless flash[:notices].nil? || flash[:notices].empty? %>
+	<% flash[:notices].each do |message|%>
+		<p><%= message %></p>
+	<% end %>
+<% end %>
+
 <%= yield %>
 
 </body>

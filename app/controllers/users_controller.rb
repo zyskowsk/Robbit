@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
 	def new
+		@user = User.new
 		render :new
 	end
 
@@ -9,9 +10,13 @@ class UsersController < ApplicationController
 		if @user.save
 			login(@user)
 		else
-			notices_now = @user.errors.full_messages
+			flash.now[:notices] = @user.errors.full_messages
 			render :new
 		end
+	end
+
+	def show
+
 	end
 
 	def destroy
