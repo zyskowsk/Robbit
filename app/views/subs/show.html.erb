@@ -1,1 +1,14 @@
-<%= @sub.name %>
+<h1><%= @sub.name %></h1>
+
+<h3>Links</h3>
+<ul>
+	<% @sub.links.each do |link| %>
+		<li>
+			<%= link_to link.title, link.url %>
+			<%= link_to "comments", "#" %>
+		</li>
+	<% end %>
+</ul>
+
+<%= button_to "edit", edit_sub_url(@sub), :method => :get %>
+

@@ -1,10 +1,28 @@
 class SubsController < ApplicationController
 
-	before_filter :is_logged_in?
+	before_filter :is_logged_in?, :only => [:create, :new, :destroy]
 	
 	def new
 		@sub = Sub.new
 		render :new
+	end
+
+	def edit
+		@sub = Sub.find(params[:id])
+
+		render :edit
+	end
+
+	def update
+		@sub = Sub.find(params[:id])
+		if @sub.update_attributes(params[:sub])
+			notices << "#{@sub.name} updated"
+			redirect_to sub_url(@sub)
+		else
+			now_notices.push(*@sub.errors)
+
+			render :edit
+		end
 	end
 
 	def create

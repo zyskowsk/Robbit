@@ -32,6 +32,9 @@ class ApplicationController < ActionController::Base
   end
 
   def is_logged_in?
-    redirect_to root_url unless logged_in?
+    unless logged_in?
+      notices << "Please login to do that"
+      redirect_to root_url
+    end
   end
 end
