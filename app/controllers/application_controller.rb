@@ -26,4 +26,12 @@ class ApplicationController < ActionController::Base
   def notices
   	flash[:notices] ||= []
   end
+
+  def now_notices
+    flash.now[:notices] ||= []
+  end
+
+  def is_logged_in?
+    redirect_to root_url unless logged_in?
+  end
 end

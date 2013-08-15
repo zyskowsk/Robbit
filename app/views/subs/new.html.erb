@@ -1,0 +1,37 @@
+<h1> Add a Sub-Robbit </h1>
+<form action="<%=subs_url%>" method="post">
+	<input type="hidden"
+			 name="authenticity_token"
+			 value="<%= form_authenticity_token %>">
+
+	<label for="sub_name">Name</label>
+	<input type="text" id="sub_name" name="sub[name]" value="<%= @sub.name %>">
+
+	<label for="sub_moderator">Moderator</label>
+	<select id="sub_moderator" name="sub[moderator_id]">
+		<% User.all.each do |user| %>
+			<option value="<%=user.id%>"><%= user.name %></option>
+		<% end %>
+	</select>
+
+	<h2>Add some links!</h2>
+	<% 5.times do |i| %>
+		<h3>Link <%= i + 1 %></h3>
+			<label for="link_title_<%= i %>">Title</label>
+			<input type="text" id="sub_link_title_<%= i %>" name="links[<%= i %>][title]">
+			
+
+			<label for="link_url_<%= i %>">Url</label>
+			<input type="text" id="link_url_<%= i %>" name="links[<%= i %>][url]">
+			<br>
+
+			<label for="link_body_<%= i %>">Body</label>
+			<textarea id="link_body_<%= i %>" name="links[<%= i %>][body]"></textarea>
+			<br>
+	<% end %>
+
+	<input type="submit">
+
+</form>
+
+

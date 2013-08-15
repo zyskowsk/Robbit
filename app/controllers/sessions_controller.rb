@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
 		@login = params[:user][:login]
 		@user = User.find_by_email(@login)
 		@user ||= User.find_by_username(@login)
-		debugger
 		if @user && @user.gave_correct_password?(params[:user][:password])
 			login(@user)
 		else

@@ -18,13 +18,17 @@ class User < ActiveRecord::Base
 
   before_create :encrypt_password
 
+  has_many :links
+  has_many :subs,
+           :class_name => "Sub",
+           :foreign_key => :moderator_id
+
 
   def gave_correct_password?(password)
   	BCrypt::Password.new(self.password_digest) == password
   end
 
   def encrypt_password
-    p self.password
   	self.password_digest = BCrypt::Password.create(password)
   end
 
