@@ -19,6 +19,10 @@ class UsersController < ApplicationController
 
 	end
 
+	def index
+
+	end
+
 	def destroy
 		#delete user from db
 	end

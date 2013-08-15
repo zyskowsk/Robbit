@@ -14,6 +14,14 @@
 	<% end %>
 <% end %>
 
+<% if logged_in? %> 
+	<h4><%=current_user.name%></h4>
+	<%= button_to "log out", session_url, :method => :delete %>
+<% else %>
+	<%= button_to "sign up", new_user_url, :method => :get %>
+	<%= button_to "sign in", new_session_url, :method => :get %>
+<% end %>
+
 <%= yield %>
 
 </body>

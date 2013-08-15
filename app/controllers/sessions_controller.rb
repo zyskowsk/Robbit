@@ -5,12 +5,13 @@ class SessionsController < ApplicationController
 	end
 
 	def create
-		@user = User.find_by_email(params[:login])
-		@user ||= User.find_by_username(params[:user][:login])
-		if @user.gave_correct_password?(params[:user][:password])
+		@login = params[:users][:login]
+		@user = User.find_by_email(@login)
+		@user ||= User.find_by_username(@login)
+		if @user && @user.gave_correct_password?(params[:user][:password])
 			login(@user)
 		else
-			notices_now = @user.errors.full_messages
+			flash.now[:notices] << "Incorrect username or password"
 			render :new
 		end
 	end

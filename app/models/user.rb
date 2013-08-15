@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :password_digest, :session_key, :username, 
   							  :password_confirmation, :password
 
-  #TODO: add validation for password length and password confirmation
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   validates :password, :length => { :minimum => 6 }
@@ -38,5 +37,4 @@ class User < ActiveRecord::Base
   		@password == @password_confirmation
   		self.errors.full_messages << "Passwords don't match"
   	end
-
 end
