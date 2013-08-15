@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(:version => 20130815175508) do
     t.string   "username",        :null => false
     t.string   "email",           :null => false
     t.string   "name",            :null => false
-    t.string   "session_key",     :null => false
+    t.string   "session_key"
     t.string   "password_digest", :null => false
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false

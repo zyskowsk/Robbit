@@ -2,34 +2,35 @@ require 'bcrypt'
 
 class User < ActiveRecord::Base
 	attr_accessor :password_confirmation, :password
-  attr_accessible :email, :name, :password_digest, :session_key, :username, 
+  attr_accessible :email, :name, :password_digest, :username, 
   							  :password_confirmation, :password
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  validates :password, :length => { :minimum => 6 }
-  validate 	:confirm_password
+  validates :password, :length => { :minimum => 6}, :on => :create
+  validate 	:confirm_password, :on => :create
   validates :email, :format => { 
   									:with => VALID_EMAIL_REGEX,
   									:message => "Please give a valid email"
   								}
-  validates :email, :name, :password, :password_confirmation, :username,
-  					:presence => true
+  validates :email, :name, :username, :presence => true
+  validates :password_confirmation, :password, :presence => true, :on => :create 
 
-  before_save :encrypt_password
-  before_validation :shuffle_session_key
+  before_create :encrypt_password
 
 
   def gave_correct_password?(password)
-  	self.password_digest == password
+  	BCrypt::Password.new(self.password_digest) == password
   end
 
   def encrypt_password
+    p self.password
   	self.password_digest = BCrypt::Password.create(password)
   end
 
-  def shuffle_session_key
+  def shuffle_session_key!
   	self.session_key = SecureRandom::urlsafe_base64(16)
+    self.save!
   end
 
   private 

@@ -12,16 +12,14 @@ class ApplicationController < ActionController::Base
   end
 
   def login(user)
-  	user.shuffle_session_key
+  	user.shuffle_session_key!
   	session[:session_key] = user.session_key
-    user.save
   	redirect_to user_url(user)
   end
 
   def logout(user)
   	user.shuffle_session_key!
   	session[:session_key] = nil
-    user.save
     redirect_to root_url
   end
 

@@ -5,13 +5,14 @@ class SessionsController < ApplicationController
 	end
 
 	def create
-		@login = params[:users][:login]
+		@login = params[:user][:login]
 		@user = User.find_by_email(@login)
 		@user ||= User.find_by_username(@login)
+		debugger
 		if @user && @user.gave_correct_password?(params[:user][:password])
 			login(@user)
 		else
-			flash.now[:notices] << "Incorrect username or password"
+			flash.now[:notices] = ["Incorrect username or password"]
 			render :new
 		end
 	end
