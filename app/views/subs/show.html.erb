@@ -4,11 +4,15 @@
 <ul>
 	<% @sub.links.each do |link| %>
 		<li>
-			<%= link_to link.title, link.url %>
+			<a href="http://<%= link.url %>"><%= link.title %></a>
 			<%= link_to "comments", "#" %>
 		</li>
 	<% end %>
 </ul>
 
-<%= button_to "edit", edit_sub_url(@sub), :method => :get %>
+<% if @sub.moderator == current_user %>
+	<%= button_to "edit", edit_sub_url(@sub), :method => :get %>
+<% end %>
+
+<%= button_to "add a link", new_link_url, :method => :get %>
 

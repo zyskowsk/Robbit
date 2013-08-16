@@ -1,3 +1,5 @@
 <%= @link.title %>
 
-<%= button_to "edit", edit_link_url(@link), :method => :get %>
+<% if @link.author == current_user %>
+	<%= button_to "edit", edit_link_url(@link), :method => :get %>
+<% end %>

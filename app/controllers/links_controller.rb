@@ -8,6 +8,7 @@ class LinksController < ApplicationController
 
 	def create
 		@link = Link.new(params[:link])
+		@link.user_id = current_user.id
 		@sub_ids = params[:sub_ids]
 
 		begin
@@ -53,6 +54,4 @@ class LinksController < ApplicationController
 
 		render :edit
 	end
-
-	
 end
