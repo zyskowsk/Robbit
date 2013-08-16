@@ -41,8 +41,8 @@ class SubsController < ApplicationController
 				@sub.save!
 
 				@links.each do |link|
-					link.sub_id = @sub.id
 					link.user_id = @sub.moderator_id
+					SubLink.create(:sub_id => @sub.id, :link_id => link.id)
 				end
 
 				@links.each { |link| link.save! }

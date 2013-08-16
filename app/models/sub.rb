@@ -5,6 +5,6 @@ class Sub < ActiveRecord::Base
   					 :class_name => "User",
   					 :foreign_key => :moderator_id
 
-  has_many :links
-
+  has_many :sub_links
+  has_many :links, :through => :sub_links
 end

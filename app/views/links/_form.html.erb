@@ -1,0 +1,39 @@
+<% action = (link.persisted? ? link_url(link) : links_url) %>
+<% method = (link.persisted? ? "put" : "") %>
+
+<form action="<%=action%>" method="post">
+	<input type="hidden" name="_method" value="<%=method%>">
+	<input type="hidden"
+			 name="authenticity_token"
+			 value="<%= form_authenticity_token %>">
+
+	<label for="link_title">Title</lable>
+	<input type="text" id="link_title" 
+										 name="link[title]" value="<%= link.title %>">
+	<br>
+
+	<label for="link_url">URL</lable>
+	<input type="text" id="link_url" 
+										 name="link[url]" value="<%= link.url %>">
+	<br>
+
+	<label for="link_body">Body</lable>
+	<textarea id="link_body" name=["link[name]"><%= link.body %></textarea>
+	<br>
+	<br>
+
+	<label>Add to Sub-Robbits</label>
+	<br>
+	<% Sub.all.each_with_index do |sub, index| %>
+		<input type="hidden" name="sub_ids[]" value="">
+
+		<% html_id = "sub_ids_#{index}" %>
+		<label for="<%= html_id %>"><%= sub.name %></label>
+		<input type="checkbox" id="<%= html_id %>" 
+													 name="sub_ids[]" value="<%= sub.id %>"
+													 <%= "checked" if link.sub_ids.include?(sub.id) %>>
+
+	<% end %>
+
+	<input type="submit">
+</form>

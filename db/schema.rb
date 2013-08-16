@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815222020) do
+ActiveRecord::Schema.define(:version => 20130815233940) do
 
   create_table "links", :force => true do |t|
     t.string   "title"
@@ -20,10 +20,19 @@ ActiveRecord::Schema.define(:version => 20130815222020) do
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "sub_id"
   end
 
   add_index "links", ["user_id"], :name => "index_links_on_user_id"
+
+  create_table "sub_links", :force => true do |t|
+    t.integer  "sub_id"
+    t.integer  "link_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sub_links", ["link_id"], :name => "index_sub_links_on_link_id"
+  add_index "sub_links", ["sub_id"], :name => "index_sub_links_on_sub_id"
 
   create_table "subs", :force => true do |t|
     t.string   "name"
