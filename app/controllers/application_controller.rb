@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   def login(user)
   	user.shuffle_session_key!
   	session[:session_key] = user.session_key
-  	redirect_to user_url(user)
+  	redirect_to root_url
   end
 
   def logout(user)

@@ -1,14 +1,9 @@
 <h1><%= @sub.name %></h1>
-
-<h3>Links</h3>
-<ul>
 	<% @sub.links.each do |link| %>
-		<li>
 			<a href="http://<%= link.url %>"><%= link.title %></a>
-			<%= link_to "comments", "#" %>
-		</li>
+			by <%= link.author.name %> 
+			<%= link_to "comments", link_url(link) %><br>
 	<% end %>
-</ul>
 
 <% if @sub.moderator == current_user %>
 	<%= button_to "edit", edit_sub_url(@sub), :method => :get %>

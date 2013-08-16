@@ -1,0 +1,20 @@
+<h1> Front Page of Robbit </h1>
+
+<ul>
+	<% Link.all.each do |link| %>
+		<li>
+			<a href="http://<%= link.url %>"><%= link.title %></a>
+			by <%= link.author.username %>
+			<%= link_to "comments", link_url(link) %>
+		</li>
+	<% end %>
+</ul>
+
+<% if logged_in? %> 
+	<h4>Welcome <%=current_user.name%>!</h4>
+	<%= button_to "log out", session_url, :method => :delete %>
+	<%= button_to "add a link", new_link_url, :method => :get %>
+<% else %>
+	<%= button_to "sign up", new_user_url, :method => :get %>
+	<%= button_to "sign in", new_session_url, :method => :get %>
+<% end %>

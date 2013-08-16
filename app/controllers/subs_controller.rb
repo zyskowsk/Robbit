@@ -41,18 +41,16 @@ class SubsController < ApplicationController
 				@sub.save!
 
 				@links.each do |link|
-					link.user_id = @sub.moderator_id
+					link.user_id = @sub.moderator_id 
+					link.save! 
 					SubLink.create(:sub_id => @sub.id, :link_id => link.id)
 				end
-
-				@links.each { |link| link.save! }
 			end
 
 			redirect_to sub_url(@sub)
 		rescue 
 			notices.push(*@sub.errors)
 			@links.each { |link| notices.push(*link.errors) }
-			p notices
 
 			render :new
 		end
@@ -62,5 +60,9 @@ class SubsController < ApplicationController
 		@sub = Sub.find(params[:id])
 
 		render :show
+	end
+
+	def front_page
+		render :front_page
 	end
 end
