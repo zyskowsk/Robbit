@@ -72,25 +72,10 @@ class LinksController < ApplicationController
 	end
 
 	def upvote
-		vote(1)
+		vote("UserVote",1)
 	end
 
 	def downvote
-		vote(-1)
+		vote("UserVote",-1)
 	end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end

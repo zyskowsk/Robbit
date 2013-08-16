@@ -1,15 +1,23 @@
+<%= link_to comment.upvote_count, comment_upvote_url(comment), 
+																	           :method => :post,
+																	           :class => "upvote" %>
+<%= link_to comment.downvote_count, comment_downvote_url(comment), 
+																		             :method => :post,
+																		             :class => "downvote" %>
+<%= link_to link.title, "http://#{@link.url}" %>
 <strong><%= comment.author.name %></strong><br>
 <%= comment.body %><br>
 
 <%= link_to "respond", 
 						  new_link_comment_url(link, :parent_id => comment.id) %>
+<% if logged_in? %>
+	<% if current_user.is_author?(comment) %>
+		<%= link_to "edit", edit_link_comment_url(link) %>
+	<% end %>
 
-<% if current_user.is_author?(comment) %>
-	<%= link_to "edit", edit_link_comment_url(link) %>
-<% end %>
-
-<% if current_user.is_mod?(link) || current_user.is_author?(comment) %>
-	<%= link_to "delete", link_url, :method => :delete %>
+	<% if current_user.is_mod?(link) || current_user.is_author?(comment) %>
+		<%= link_to "delete", link_url, :method => :delete %>
+	<% end %>
 <% end %>
 <ul>
 	<% comments_by_parent_id[comment.id].each do |cmt| %>

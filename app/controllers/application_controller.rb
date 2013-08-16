@@ -38,10 +38,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def vote(value)
-    @vote = UserVote.new(:user_id => current_user.id,
-                         :link_id => params[:link_id],
-                         :value => value)
+  def vote(klass, value)
+    case klass
+    when "UserVote"
+      @vote = UserVote.new(:user_id => current_user.id,
+                           :link_id => params[:link_id],
+                           :value => value)
+    when "CommentVote"
+      @vote = CommentVote.new(:user_id => current_user.id,
+                              :comment_id => params[:comment_id],
+                              :value => value)
+    end
+
+    save_vote
+  end
+
+  def save_vote
     if @vote.save
       notices << "Thanks for voting!"
       redirect_to :back

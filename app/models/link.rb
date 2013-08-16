@@ -16,12 +16,18 @@ class Link < ActiveRecord::Base
            :foreign_key => :link_id
 
   def comments_by_parent_id
-  	comment_hash = Hash.new { [] }
+  	temp_hash = Hash.new { [] }
+    comments_by_parent_id = Hash.new{ [] }
+    
   	self.comments.each do |comment|
-  		comment_hash[comment.parent_id] += [comment]
+  		temp_hash[comment.parent_id] += [comment]
   	end
 
-  	comment_hash
+  	temp_hash.each do |key ,value| 
+      comments_by_parent_id[key] = value.sort_by(&:score) 
+    end
+
+    comments_by_parent_id
   end
      
   def upvote_count
@@ -35,5 +41,4 @@ class Link < ActiveRecord::Base
   def score
     self.downvote_count - self.upvote_count 
   end
-
 end

@@ -1,6 +1,9 @@
 class CommentsController < ApplicationController
-	def new
+	
+	before_filter :is_logged_in?
 
+	def new
+		render :new
 	end	
 
 	def create
@@ -13,5 +16,13 @@ class CommentsController < ApplicationController
 			now_notice.push(*@comment.errors.full_messages)
 			render :new
 		end
+	end
+
+	def upvote
+		vote("CommentVote",1)
+	end
+
+	def downvote
+		vote("CommentVote",-1)
 	end
 end
