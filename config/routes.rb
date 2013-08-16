@@ -4,6 +4,6 @@ Robbit::Application.routes.draw do
   resources :users
   resources :subs
   resources :links do
-		resources :comments, :only => [:new, :delete, :create]
+		resources :comments, :only => [:new, :delete, :create, :edit]
   end
 end

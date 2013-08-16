@@ -1,13 +1,22 @@
-<h3><%= link_to @link.title, @link.url %></h3>
+<h3><%= link_to @link.title, "http://#{@link.url}" %></h3>
 <h4>Author: <%= @link.author.username %></h4>
 <p><%= @link.body %></p>
-<%= link_to "respond", new_comment_url %>
+<%= link_to "respond", new_link_comment_url(@link) %>
 
 <h4> Comments </h4>
 <% @link.comments.each do |comment| %>
-	<%= comment.body %>
-	by <%= comment.author %>
-	<%= link_to "respond", new_comment_url %>
+	<p>
+		<%= comment.body %>
+		by <%= comment.author.name %>
+		<%= link_to "respond", 
+							  new_link_comment_url(@link, :parent_id => comment.id) %>
+		<% if current_user.is_author?(comment) %>
+			<%= link_to "edit", edit_link_comment_url(@link) %>
+		<% end %>
+		<% if current_user.is_mod?(@link) || current_user.is_author?(comment) %>
+			<%= link_to "delete", link_url, :method => :delete %>
+		<% end %>
+	</p>
 <% end %>
 
 <% if @link.author == current_user %>

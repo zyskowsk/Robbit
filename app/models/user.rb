@@ -23,19 +23,27 @@ class User < ActiveRecord::Base
            :class_name => "Sub",
            :foreign_key => :moderator_id
 
+  def encrypt_password
+    self.password_digest = BCrypt::Password.create(password)
+  end
 
   def gave_correct_password?(password)
   	BCrypt::Password.new(self.password_digest) == password
   end
 
-  def encrypt_password
-  	self.password_digest = BCrypt::Password.create(password)
+  def is_author?(post)
+    self.id == post.author.id
+  end
+
+  def is_mod?(link)
+    link.subs.map(&:moderator_id).include?(self.id)
   end
 
   def shuffle_session_key!
   	self.session_key = SecureRandom::urlsafe_base64(16)
     self.save!
   end
+
 
   private 
   	def confirm_password
