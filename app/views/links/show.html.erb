@@ -4,20 +4,17 @@
 <%= link_to "respond", new_link_comment_url(@link) %>
 
 <h4> Comments </h4>
-<% @link.comments.each do |comment| %>
-	<p>
-		<%= comment.body %>
-		by <%= comment.author.name %>
-		<%= link_to "respond", 
-							  new_link_comment_url(@link, :parent_id => comment.id) %>
-		<% if current_user.is_author?(comment) %>
-			<%= link_to "edit", edit_link_comment_url(@link) %>
-		<% end %>
-		<% if current_user.is_mod?(@link) || current_user.is_author?(comment) %>
-			<%= link_to "delete", link_url, :method => :delete %>
-		<% end %>
-	</p>
-<% end %>
+<% comments_by_parent_id = @link.comments_by_parent_id %>
+<ul>
+	<% comments_by_parent_id[nil].each do |cmt| %>
+		<li>
+			<%= render :partial => "comment", 
+							:locals => {:link => @link,
+												  :comment => cmt,
+													:comments_by_parent_id => comments_by_parent_id} %>
+		</li>
+	<% end %>
+</ul>
 
 <% if @link.author == current_user %>
 	<%= button_to "edit", edit_link_url(@link), :method => :get %>

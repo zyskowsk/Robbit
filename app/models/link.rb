@@ -11,4 +11,13 @@ class Link < ActiveRecord::Base
   has_many :sub_links
   has_many :subs, :through => :sub_links
   has_many :comments
+
+  def comments_by_parent_id
+  	comment_hash = Hash.new { [] }
+  	self.comments.each do |comment|
+  		comment_hash[comment.parent_id] += [comment]
+  	end
+
+  	comment_hash
+  end
 end
