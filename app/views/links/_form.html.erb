@@ -7,25 +7,25 @@
 			 name="authenticity_token"
 			 value="<%= form_authenticity_token %>">
 
-	<label for="link_title">Title</lable>
+	<label for="link_title">Title</label>
 	<input type="text" id="link_title" 
 										 name="link[title]" value="<%= link.title %>">
 	<br>
 
-	<label for="link_url">URL</lable>
+	<label for="link_url">URL</label>
 	<input type="text" id="link_url" 
 										 name="link[url]" value="<%= link.url %>">
 	<br>
 
-	<label for="link_body">Body</lable>
-	<textarea id="link_body" name=["link[name]"><%= link.body %></textarea>
+	<label for="link_body">Body</label>
+	<textarea id="link_body" name="link[body]"><%= link.body %></textarea>
 	<br>
 	<br>
 
 	<label>Add to Sub-Robbits</label>
 	<br>
+	<input type="hidden" name="sub_ids[]" value="">
 	<% Sub.all.each_with_index do |sub, index| %>
-		<input type="hidden" name="sub_ids[]" value="">
 
 		<% html_id = "sub_ids_#{index}" %>
 		<label for="<%= html_id %>"><%= sub.name %></label>
