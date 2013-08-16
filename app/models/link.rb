@@ -10,4 +10,5 @@ class Link < ActiveRecord::Base
 
   has_many :sub_links
   has_many :subs, :through => :sub_links
+  has_many :comments
 end

@@ -3,5 +3,7 @@ Robbit::Application.routes.draw do
   resource :session, :only => [:new, :create, :destroy]
   resources :users
   resources :subs
-  resources :links
+  resources :links do
+		resources :comments, :only => [:new, :delete, :create]
+  end
 end
