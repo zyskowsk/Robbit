@@ -34,7 +34,20 @@ class ApplicationController < ActionController::Base
   def is_logged_in?
     unless logged_in?
       notices << "Please login to do that"
-      redirect_to root_url
+      redirect_to :back
+    end
+  end
+
+  def vote(value)
+    @vote = UserVote.new(:user_id => current_user.id,
+                         :link_id => params[:link_id],
+                         :value => value)
+    if @vote.save
+      notices << "Thanks for voting!"
+      redirect_to :back
+    else
+      notices << "You already voted!"
+      redirect_to :back
     end
   end
 end

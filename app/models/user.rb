@@ -22,6 +22,9 @@ class User < ActiveRecord::Base
   has_many :subs,
            :class_name => "Sub",
            :foreign_key => :moderator_id
+  has_many :likes, 
+           :class_name => "UserVote",
+           :foreign_key => :user_id
 
   def encrypt_password
     self.password_digest = BCrypt::Password.create(password)

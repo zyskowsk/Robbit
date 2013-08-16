@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
 
-	before_filter :is_logged_in?, :only => [:new, :create]
+	before_filter :is_logged_in?, :only => [:new, :create, :upvote, :downvote]
 
 	def new
 		@link = Link.new
@@ -70,4 +70,27 @@ class LinksController < ApplicationController
 
 		render :edit
 	end
+
+	def upvote
+		vote(1)
+	end
+
+	def downvote
+		vote(-1)
+	end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end

@@ -1,8 +1,14 @@
 <h1> Front Page of Robbit </h1>
 
 <ul>
-	<% Link.all.each do |link| %>
+	<% Link.all.sort_by(&:score).each do |link| %>
 		<li>
+				<%= link_to "#{link.upvote_count}", link_upvote_url(link), 
+																	     			:method => :post,
+																	     			:class => "upvote" %>
+				<%= link_to link.downvote_count, link_downvote_url(link), 
+																				 :method => :post,
+																				 :class => "downvote" %>
 			<a href="http://<%= link.url %>"><%= link.title %></a>
 			by <%= link.author.username %>
 			<%= link_to "comments", link_url(link) %>

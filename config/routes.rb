@@ -4,6 +4,10 @@ Robbit::Application.routes.draw do
   resources :users
   resources :subs
   resources :links do
+  	post "/upvote" => "links#upvote"
+  	post "/downvote" => "links#downvote"
 		resources :comments, :only => [:new, :delete, :create, :edit]
   end
+
+
 end

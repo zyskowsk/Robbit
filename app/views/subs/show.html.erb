@@ -1,9 +1,15 @@
 <h1><%= @sub.name %></h1>
 <h3>Moderator: <%= @sub.moderator.username %></h3>
-	<% @sub.links.each do |link| %>
-			<a href="http://<%= link.url %>"><%= link.title %></a>
-			by <%= link.author.name %> 
-			<%= link_to "comments", link_url(link) %><br>
+	<% @sub.links.sort_by(&:score).each do |link| %>
+		<%= link_to "#{link.upvote_count}", link_upvote_url(link), 
+																     		:method => :post,
+																     		:class => "upvote" %>
+		<%= link_to link.downvote_count, link_downvote_url(link), 
+																		 :method => :post,
+																		 :class => "downvote" %>
+		<a href="http://<%= link.url %>"><%= link.title %></a>
+		by <%= link.author.name %> 
+		<%= link_to "comments", link_url(link) %><br>
 	<% end %>
 
 <% if @sub.moderator == current_user %>

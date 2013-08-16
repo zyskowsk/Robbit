@@ -11,6 +11,9 @@ class Link < ActiveRecord::Base
   has_many :sub_links
   has_many :subs, :through => :sub_links
   has_many :comments
+  has_many :votes, 
+           :class_name => "UserVote",
+           :foreign_key => :link_id
 
   def comments_by_parent_id
   	comment_hash = Hash.new { [] }
@@ -20,4 +23,17 @@ class Link < ActiveRecord::Base
 
   	comment_hash
   end
+     
+  def upvote_count
+    self.votes.where("value = ?", 1).count
+  end
+
+  def downvote_count
+    self.votes.where("value = ?", -1).count
+  end
+
+  def score
+    self.downvote_count - self.upvote_count 
+  end
+
 end
