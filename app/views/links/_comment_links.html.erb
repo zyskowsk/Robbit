@@ -1,0 +1,11 @@
+<%= link_to "respond", 
+						  new_link_comment_url(link, :parent_id => comment.id) %>
+<% if logged_in? %>
+	<% if current_user.is_author?(comment) %>
+		<%= link_to "edit", edit_link_comment_url(link) %>
+	<% end %>
+
+	<% if current_user.is_mod?(link) || current_user.is_author?(comment) %>
+		<%= link_to "delete", link_url, :method => :delete %>
+	<% end %>
+<% end %>

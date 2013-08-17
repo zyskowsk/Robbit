@@ -8,14 +8,14 @@
 </head>
 <body>
 
-<%= button_to "home", root_url, :method => :get %>
-<%= button_to "sub-robbits", subs_url, :method => :get %>
-
 <% unless flash[:notices].nil? || flash[:notices].empty? %>
 	<% flash[:notices].each do |message|%>
 		<p><%= message %></p>
 	<% end %>
 <% end %>
+
+<%= button_to "home", root_url, :method => :get %>
+<%= button_to "sub-robbits", subs_url, :method => :get %>
 
 <%= yield %>
 

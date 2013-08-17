@@ -1,15 +1,10 @@
 <h3>
-	<%= link_to "#{@link.upvote_count}", link_upvote_url(@link), 
-																	     :method => :post,
-																	     :class => "upvote" %>
-	<%= link_to @link.downvote_count, link_downvote_url(@link), 
-																		:method => :post,
-																		:class => "downvote" %>
+	<% render :partial => "link_vote_links", :locals => { :link => @link } %>
 	<%= link_to @link.title, "http://#{@link.url}" %>
 </h3>
+
 <h4>Author: <%= @link.author.username %></h4>
-<p><%= @link.body %></p> 
-<%= link_to "respond", new_link_comment_url(@link) %>
+<p><%= @link.body %></p><%= link_to "respond", new_link_comment_url(@link) %>
 
 <h4> Comments </h4>
 <% comments_by_parent_id = @link.comments_by_parent_id %>
@@ -17,13 +12,13 @@
 	<% comments_by_parent_id[nil].each do |cmt| %>
 		<li>
 			<%= render :partial => "comment", 
-							:locals => {:link => @link,
-												  :comment => cmt,
-													:comments_by_parent_id => comments_by_parent_id} %>
+							:locals => { :link => @link,
+												   :comment => cmt,
+													 :comments_by_parent_id => comments_by_parent_id } %> 
 		</li>
 	<% end %>
 </ul>
 
 <% if @link.author == current_user %>
-	<%= button_to "edit", edit_link_url(@link), :method => :get %>
+	<%= button_to "edit link", edit_link_url(@link), :method => :get %>
 <% end %>

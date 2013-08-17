@@ -1,0 +1,4 @@
+<%= link_to comment.upvote_count, comment_upvote_url(comment), 
+															:method => :post, :class => "upvote" %>
+<%= link_to comment.downvote_count, comment_downvote_url(comment), 
+														  :method => :post, :class => "downvote" %>

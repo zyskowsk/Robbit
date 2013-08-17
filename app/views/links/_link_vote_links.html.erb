@@ -1,0 +1,4 @@
+<%= link_to link.upvote_count, link_upvote_url(link), 
+																:method => :post, :class => "upvote" %>
+<%= link_to link.downvote_count, link_downvote_url(link), 
+																 :method => :post, :class => "downvote" %>
