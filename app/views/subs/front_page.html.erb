@@ -5,8 +5,7 @@
 <ul>
 	<% Link.all.sort_by(&:score).each do |link| %>
 		<li>
-			<%= render :partial => "links/link_vote_links", 
-																				:locals => { :link => link } %>
+			<%= render "links/link_vote_links", :link => link %>
 			<a href="http://<%= link.url %>"><%= link.title %></a>
 			by <%= link.author.username %>
 			<%= link_to "comments", link_url(link) %>

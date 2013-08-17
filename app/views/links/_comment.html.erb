@@ -1,5 +1,4 @@
-<%= render :partial => "comment_vote_links", 
-					 :locals => { :comment => comment } %>
+<%= render "comment_vote_links", :comment => comment %>
 <%= link_to link.title, "http://#{@link.url}" %>
 <strong><%= comment.author.name %></strong><br>
 <%= comment.body %><br>
