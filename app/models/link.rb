@@ -30,15 +30,41 @@ class Link < ActiveRecord::Base
     comments_by_parent_id
   end
      
-  def upvote_count
-    self.votes.where("value = ?", 1).count
-  end
-
   def downvote_count
     self.votes.where("value = ?", -1).count
   end
 
+  def save_link_and_subs(sub_ids)
+    ActiveRecord::Base.transaction do
+      self.save!
+      sub_ids.each do |sub_id|
+        SubLink.create!(:sub_id => sub_id, :link_id => self.id)
+      end
+    end
+  end
+
   def score
     self.downvote_count - self.upvote_count 
+  end
+
+  def upvote_count
+    self.votes.where("value = ?", 1).count
+  end
+
+  def update_link_and_subs(params)
+    @new_sub_ids = params[:sub_ids] - self.sub_ids
+    @old_sub_ids = self.sub_ids - params[:sub_ids]
+
+    ActiveRecord::Base.transaction do
+      self.update_attributes(params[:link])
+
+      @new_sub_ids.each do |sub_id| 
+        SubLink.create(:sub_id => sub_id, :link_id => self.id)
+      end
+
+      @old_sub_ids.each do |sub_id|
+        SubLink.find_by_sub_id_and_link_id(sub_id, self.id).destroy
+      end
+    end
   end
 end

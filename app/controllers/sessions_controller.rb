@@ -1,9 +1,5 @@
 class SessionsController < ApplicationController
 
-	def new
-		render :new
-	end
-
 	def create
 		@login = params[:user][:login]
 		@user = User.find_by_email(@login)
@@ -18,5 +14,9 @@ class SessionsController < ApplicationController
 
 	def destroy
 		logout(current_user)
+	end
+
+	def new
+		render :new
 	end
 end

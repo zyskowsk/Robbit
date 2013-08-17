@@ -1,12 +1,5 @@
 class LinksController < ApplicationController
-
 	before_filter :is_logged_in?, :only => [:new, :create, :upvote, :downvote]
-
-	def new
-		@link = Link.new
-
-		render :new
-	end
 
 	def create
 		@link = Link.new(params[:link])
@@ -14,55 +7,20 @@ class LinksController < ApplicationController
 		@sub_ids = params[:sub_ids]
 
 		begin
-			ActiveRecord::Base.transaction do
-				@link.save!
-				@sub_ids.each do |sub_id|
-					SubLink.create!(:sub_id => sub_id, :link_id => @link.id)
-				end
-			end
-
+			@link.save_link_and_subs(@sub_ids)
 			redirect_to root_url
 		rescue
-			now_notices.push(*@link.errors.full_messages)
-			@subs = @sub_ids.map { |id| Sub.find_by_id(id) }.compact
-			unless @subs.empty?
-				now_notices.push(*@subs.map{ |sub| sub.errors.full_messages }.flatten)
-			end
-
+			create_error_messages
 			render :new
 		end
 	end
 
-	def update
-		@link = Link.find(params[:id])
-		@new_sub_ids = params[:sub_ids] - @link.sub_ids
-		@old_sub_ids = @link.sub_ids - params[:sub_ids]
-
-		begin 
-			ActiveRecord::Base.transaction do
-				@link.update_attributes(params[:link])
-
-				@new_sub_ids.each do |sub_id| 
-					SubLink.create(:sub_id => sub_id, :link_id => @link.id)
-				end
-
-				@old_sub_ids.each do |sub_id|
-					SubLink.find_by_sub_id_and_link_id(sub_id, @link.id).destroy
-				end
-			end
-			notices << "#{@link.title} updated"
-			redirect_to link_url(@link)
-		rescue
-			now_notices.push(*@link.errors.full_messages)
-
-			render :edit
-		end
+	def destroy
+		#TODO: write
 	end
 
-	def show
-		@link = Link.find(params[:id])
-
-		render :show
+	def downvote
+		vote("UserVote",-1)
 	end
 
 	def edit
@@ -71,11 +29,40 @@ class LinksController < ApplicationController
 		render :edit
 	end
 
+	def new
+		@link = Link.new
+		render :new
+	end
+
+	def show
+		@link = Link.find(params[:id])
+		render :show
+	end
+
+	def update
+		@link = Link.find(params[:id])
+		
+		begin 
+			@link.update_link_and_subs(params)
+
+			notices << "#{@link.title} updated"
+			redirect_to link_url(@link)
+		rescue
+			now_notices.push(*@link.errors.full_messages)
+			render :edit
+		end
+	end
+
 	def upvote
 		vote("UserVote",1)
 	end
 
-	def downvote
-		vote("UserVote",-1)
-	end
+	private 
+		def create_error_messages
+			now_notices.push(*@link.errors.full_messages)
+			@subs = @sub_ids.map { |id| Sub.find_by_id(id) }.compact
+			unless @subs.empty?
+				now_notices.push(*@subs.map{ |sub| sub.errors.full_messages }.flatten)
+			end
+		end
 end

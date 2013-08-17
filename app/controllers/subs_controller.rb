@@ -1,16 +1,36 @@
 class SubsController < ApplicationController
-
 	before_filter :is_logged_in?, :only => [:create, :new, :destroy]
 	
+	def create
+		@sub = Sub.new(params[:sub])
+		@links = gather_links
+
+		begin
+			@sub.save_sub_and_links(@links)
+			redirect_to sub_url(@sub)
+		rescue 
+			create_error_messages
+			render :new
+		end
+	end
+
+	def edit
+		@sub = Sub.find(params[:id])
+		render :edit
+	end
+
+	def front_page
+		render :front_page
+	end
+
 	def new
 		@sub = Sub.new
 		render :new
 	end
 
-	def edit
+	def show
 		@sub = Sub.find(params[:id])
-
-		render :edit
+		render :show
 	end
 
 	def update
@@ -25,44 +45,19 @@ class SubsController < ApplicationController
 		end
 	end
 
-	def create
-			@sub = Sub.new(params[:sub])
-
-			@links = params[:links].values.map do |link|
-				unless link.values.all? { |value| value.blank? }
-					Link.new(:title => link[:title], 
-									 :url => link[:url],
-									 :body => link[:body])		
-				end
-			end.compact!
-
-		begin
-			ActiveRecord::Base.transaction do
-				@sub.save!
-
-				@links.each do |link|
-					link.user_id = @sub.moderator_id 
-					link.save! 
-					SubLink.create(:sub_id => @sub.id, :link_id => link.id)
-				end
-			end
-
-			redirect_to sub_url(@sub)
-		rescue 
+	private
+		def create_error_messages
 			notices.push(*@sub.errors)
 			@links.each { |link| notices.push(*link.errors) }
-
-			render :new
 		end
-	end
 
-	def show
-		@sub = Sub.find(params[:id])
-
-		render :show
-	end
-
-	def front_page
-		render :front_page
-	end
+		def gather_links
+			params[:links].values.map do |link|
+				unless link.values.all? { |value| value.blank? }
+					Link.new( :title => link[:title], 
+									  :url => link[:url],
+									  :body => link[:body] )		
+				end
+			end.compact!
+		end
 end

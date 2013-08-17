@@ -2,10 +2,6 @@ class CommentsController < ApplicationController
 	
 	before_filter :is_logged_in?
 
-	def new
-		render :new
-	end	
-
 	def create
 		@comment = Comment.new(params[:comment])
 		@comment.user_id = current_user.id 
@@ -18,11 +14,19 @@ class CommentsController < ApplicationController
 		end
 	end
 
-	def upvote
-		vote("CommentVote",1)
+	def destroy
+		#TODO: write 
 	end
 
 	def downvote
 		vote("CommentVote",-1)
+	end
+
+	def new
+		render :new
+	end	
+
+	def upvote
+		vote("CommentVote",1)
 	end
 end

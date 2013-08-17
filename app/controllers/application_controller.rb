@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
     User.find_by_session_key(session[:session_key])
   end
 
+  def is_logged_in?
+    unless logged_in?
+      notices << "Please login to do that"
+      redirect_to :back
+    end
+  end
+
   def logged_in?
     !!current_user
   end
@@ -31,23 +38,16 @@ class ApplicationController < ActionController::Base
     flash.now[:notices] ||= []
   end
 
-  def is_logged_in?
-    unless logged_in?
-      notices << "Please login to do that"
-      redirect_to :back
-    end
-  end
-
   def vote(klass, value)
     case klass
     when "UserVote"
-      @vote = UserVote.new(:user_id => current_user.id,
-                           :link_id => params[:link_id],
-                           :value => value)
+      @vote = UserVote.new( :user_id => current_user.id,
+                            :link_id => params[:link_id],
+                            :value => value )
     when "CommentVote"
-      @vote = CommentVote.new(:user_id => current_user.id,
-                              :comment_id => params[:comment_id],
-                              :value => value)
+      @vote = CommentVote.new( :user_id => current_user.id,
+                               :comment_id => params[:comment_id],
+                               :value => value )
     end
 
     save_vote
