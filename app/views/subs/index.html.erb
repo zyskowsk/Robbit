@@ -1,9 +1,9 @@
+<% if logged_in? %>
+	<%= button_to "add a sub-robbit", new_sub_url, :method => :get %>
+<% end %>
+
 <h1> Sub-Robbits </h1>
 
 <% Sub.all.each do |sub| %>
 	<%= link_to sub.name, sub_url(sub) %><br>
-<% end %>
-
-<% if logged_in? %>
-	<%= button_to "add a sub-robbit", new_sub_url, :method => :get %>
 <% end %>

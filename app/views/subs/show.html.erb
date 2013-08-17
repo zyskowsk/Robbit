@@ -1,5 +1,12 @@
+<% if @sub.moderator == current_user %>
+	<%= button_to "edit", edit_sub_url(@sub), :method => :get %>
+<% end %>
+
+<%= button_to "add a link", new_link_url, :method => :get %>
+
 <h1><%= @sub.name %></h1>
 <h3>Moderator: <%= @sub.moderator.username %></h3>
+
 	<% @sub.links.sort_by(&:score).each do |link| %>
 		<%= render :partial => "links/link_vote_links", 
 																					:locals => { :link => link } %>
@@ -8,9 +15,4 @@
 		<%= link_to "comments", link_url(link) %><br>
 	<% end %>
 
-<% if @sub.moderator == current_user %>
-	<%= button_to "edit", edit_sub_url(@sub), :method => :get %>
-<% end %>
-
-<%= button_to "add a link", new_link_url, :method => :get %>
 
