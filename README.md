@@ -1,7 +1,6 @@
-This is a basic reddit clone
+### Robbit
 
-TODO:
+#### Description
 
-	delete actions
-	edit action for comments
-	embed comment form on link show page
+This is a reddit clone that I built as an excercies in Rails backend development.  
+
